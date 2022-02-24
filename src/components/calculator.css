@@ -25,7 +25,8 @@ table {
 
 tr {
   width: 280px;
-  float: left;
+  display: flex;
+  justify-content: center;
 }
 
 button {
@@ -43,6 +44,9 @@ button {
   color: #ff0509;
   cursor: pointer;
 }
+.equalButton{
+  width: 250px;
+}
 
 .displayResult {
   width: 270px;
@@ -55,7 +59,7 @@ button {
   color: #ffffff;
   text-align: right;
   font-weight: 700;
-  font-size: 60px;
+  font-size: 40px;
   line-height: 60px;
   margin: 0 25px;
 }

@@ -46,13 +46,14 @@ function Calculator() {
     }
 
     if (boardValue[0] === "0") {
-      if (value === "/" || value === "*") {
+      if (value === "/" || value === "*" || value === "+") {
         return;
       }
-      if (value === ".") {
+      if (value === "." && boardValue.length === 1) {
         setBoardValue("0.");
         return;
       }
+
       if (boardValue.length === 1) {
         setBoardValue((preValue) => preValue.slice(1) + e.target.textContent);
         return;
@@ -66,6 +67,9 @@ function Calculator() {
   };
   const onEqualClickHandler = (e) => {
     e.preventDefault();
+    if (boardValue[0] === "-" && boardValue.length === 1) {
+      return;
+    }
     setBoardValue(compute(boardValue));
   };
   return (

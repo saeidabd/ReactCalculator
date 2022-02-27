@@ -2,6 +2,7 @@ import { useState } from "react";
 import { AadadButtons } from "./Buttons";
 import { Board } from "./Board";
 import "./calculator.css";
+import compute from "./compute";
 
 function Calculator() {
   const [boardValue, setBoardValue] = useState("0");
@@ -26,7 +27,6 @@ function Calculator() {
       return;
     }
     let dotInclude = false;
-    console.log(boardValue);
     let lastVal = boardValue.split("+");
     lastVal = lastVal[lastVal.length - 1];
     lastVal = lastVal.split("-");
@@ -66,7 +66,7 @@ function Calculator() {
   };
   const onEqualClickHandler = (e) => {
     e.preventDefault();
-    setBoardValue(Calculate(boardValue));
+    setBoardValue(compute(boardValue));
   };
   return (
     <>
@@ -84,20 +84,3 @@ function Calculator() {
 }
 
 export default Calculator;
-
-const Calculate = (boardValue) => {
-  if (
-    boardValue[boardValue.length - 1] === "." ||
-    boardValue[boardValue.length - 1] === "+" ||
-    boardValue[boardValue.length - 1] === "/" ||
-    boardValue[boardValue.length - 1] === "-" ||
-    boardValue[boardValue.length - 1] === "*"
-  ) {
-    boardValue = boardValue.slice(0, boardValue.length - 1);
-  }
-  let returnVal = eval(boardValue).toString();
-  if (returnVal.slice(0, 2) === "0." && returnVal.length > 12) {
-    returnVal = returnVal.slice(0, 12);
-  }
-  return returnVal;
-};

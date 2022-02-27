@@ -6,36 +6,57 @@ import "./calculator.css";
 function Calculator() {
   const [boardValue, setBoardValue] = useState("0");
   const onNumberClickHandler = (e) => {
-    console.log(boardValue);
     e.preventDefault();
     let value = e.target.textContent;
-    if (boardValue[boardValue.length - 1] === "." && value === ".") {
+    if (boardValue.length > 11) {
       return;
     }
-    if (boardValue[boardValue.length - 1] === "+" && value === "+") {
-      return;
-    }
-    if (boardValue[boardValue.length - 1] === "-" && value === "-") {
-      return;
-    }
-    if (boardValue[boardValue.length - 1] === "*" && value === "*") {
+    if (
+      (boardValue[boardValue.length - 1] === "." ||
+        boardValue[boardValue.length - 1] === "+" ||
+        boardValue[boardValue.length - 1] === "/" ||
+        boardValue[boardValue.length - 1] === "-" ||
+        boardValue[boardValue.length - 1] === "*") &&
+      (value === "." ||
+        value === "+" ||
+        value === "-" ||
+        value === "*" ||
+        value === "/")
+    ) {
       return;
     }
     let dotInclude = false;
-    for (let index = 0; index < boardValue.length; index++) {
-      const char = boardValue[index];
+    console.log(boardValue);
+    let lastVal = boardValue.split("+");
+    lastVal = lastVal[lastVal.length - 1];
+    lastVal = lastVal.split("-");
+    lastVal = lastVal[lastVal.length - 1];
+    lastVal = lastVal.split("*");
+    lastVal = lastVal[lastVal.length - 1];
+    lastVal = lastVal.split("/");
+    lastVal = lastVal[lastVal.length - 1];
+    for (let index = 0; index < lastVal.length; index++) {
+      const char = lastVal[index];
       if (char === ".") {
         dotInclude = true;
       }
     }
     if (value === "." && dotInclude) {
-      console.log("ss");
       return;
     }
 
     if (boardValue[0] === "0") {
-      setBoardValue((preValue) => preValue.slice(1) + e.target.textContent);
-      return;
+      if (value === "/" || value === "*") {
+        return;
+      }
+      if (value === ".") {
+        setBoardValue("0.");
+        return;
+      }
+      if (boardValue.length === 1) {
+        setBoardValue((preValue) => preValue.slice(1) + e.target.textContent);
+        return;
+      }
     }
     if (value === "C") {
       setBoardValue("0");
@@ -65,5 +86,18 @@ function Calculator() {
 export default Calculator;
 
 const Calculate = (boardValue) => {
-  return eval(boardValue);
+  if (
+    boardValue[boardValue.length - 1] === "." ||
+    boardValue[boardValue.length - 1] === "+" ||
+    boardValue[boardValue.length - 1] === "/" ||
+    boardValue[boardValue.length - 1] === "-" ||
+    boardValue[boardValue.length - 1] === "*"
+  ) {
+    boardValue = boardValue.slice(0, boardValue.length - 1);
+  }
+  let returnVal = eval(boardValue).toString();
+  if (returnVal.slice(0, 2) === "0." && returnVal.length > 12) {
+    returnVal = returnVal.slice(0, 12);
+  }
+  return returnVal;
 };
